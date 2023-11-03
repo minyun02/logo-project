@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 
 const Post = new mongoose.Schema({
-  name: { type: String, required: true},
-  prompt: { type: String, required: true},
+  userId: { type: String, required: true},
+  username: { type: String, required: true},
+  teamName: { type: String, required: true},
+  sportsType: { type: String, required: true},
   photo: { type: String, required: true}
 })
 
