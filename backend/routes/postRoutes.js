@@ -2,7 +2,8 @@ import express from 'express'
 import * as dotenv from 'dotenv'
 import { v2 as cloudinary } from 'cloudinary'
 
-import Post from '../mongodb/models/Post.js'
+import Post from '../models/Post.js'
+import User from '../models/User.js'
 
 dotenv.config()
 
@@ -24,14 +25,24 @@ router.route('/').get(async(req, res) => {
   }
 })
 
-router.route('/').post(async(req, res) => {
+router.route('/').post( async (req, res) => {
   try {
-    const { name, prompt, photo } = req.body
+    const userId = req.headers.userid
+    const user = await User.findOne({ userId: userId })
+  
+    if (!user) {
+      res.status(401).json({ success: false, message: "존재하지 않는 회원입니다."})
+    }
+    
+    const username = user.name
+    const { sportsType, teamName, photo } = req.body
     const photoUrl = await cloudinary.uploader.upload(photo)
 
     const newPost = await Post.create({
-      name,
-      prompt,
+      userId,
+      username,
+      sportsType,
+      teamName,
       photo: photoUrl.url,
     })
 
