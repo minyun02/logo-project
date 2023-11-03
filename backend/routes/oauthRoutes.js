@@ -37,7 +37,7 @@ router.route('/').get(async (req, res) => {
   
     const user = User.findOne({userId: id})
     
-    if (user.name === undefined) {
+    if (!user) {
       const newUser = User.create({
         userId: id,
         gender: gender,
