@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { preview } from '../assets'
 import { FormField, Loader } from '../components'
-import { getRandomPrompt } from '../utils'
+import { Cookies } from 'react-cookie'
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ const CreatePost = () => {
 
   const generateImage = async () => {
     console.log(form)
-    if (form.sportsType) {
+    if (form.sportsType && form.teamName) {
       try {
         setGeneratingImg(true)
         const response = await fetch('http://localhost:8080/api/v1/dalle', {
@@ -41,21 +41,27 @@ const CreatePost = () => {
         setGeneratingImg(false)
       }
     } else {
-      alert('Please enter a prompt')
+      if (!form.sportsType) {
+        alert('운동 종류를 입력해주세요.')
+      } else if (!form.teamName) {
+        alert('팀 이름을 입력해주세요.')
+      }
+      
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (form.sportsTypep && form.photo) {
+    if (form.sportsType && form.photo) {
       setLoading(true)
-
+      const cookie = new Cookies()
       try {
         const response = await fetch('http://localhost:8080/api/v1/posts', {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
+            userId: cookie.get('auth_user')
           },
           body: JSON.stringify(form)
         })
@@ -68,8 +74,6 @@ const CreatePost = () => {
       } finally {
         setLoading(false)
       }
-    } else {
-      alert('Please enter a prompt')
     }
   }
 
@@ -77,17 +81,12 @@ const CreatePost = () => {
     setForm({ ...form, [e.target.name]: e.target.value })
     console.log(form)
   }
-  
-  const handleSurpriseMe = (e) => {
-    const randomPrompt = getRandomPrompt(form.prompt)
-    setForm({...form, prompt: randomPrompt})
-  }
 
   return (
     <section className='max-w-7xl mx-auto'>
       <div>
-        <h1 className='font-extrabold text-black text-[32px]'>Create</h1>
-        <p className='mt-2 text-gray-400 text-[16px] max-w-[500px]'>Create image</p>
+        <h1 className='font-extrabold text-black text-[32px]'>로고 만들기</h1>
+        <p className='mt-2 text-gray-400 text-[16px] max-w-[500px]'>아래 항목을 채우고 우리 팀 로고를 만들어 보세요!</p>
       </div>
 
       <form action="" className='mt-16 max-w-3xl' onSubmit={handleSubmit}>
@@ -97,7 +96,7 @@ const CreatePost = () => {
             title='text'
             type='text'
             name='sportsType'
-            placeholder='팀 마스코트를 알려주세요. 예시) 사자, 곰, 강아지 등...'
+            placeholder='어떤 운동인지 알려주세요. 예시) 축구, 농구, 배드민턴 등...'
             value={form.sportsType}
             handleChange={handleChange}
             required={true}
@@ -110,6 +109,7 @@ const CreatePost = () => {
             placeholder='팀명을 알려주세요.'
             value={form.name}
             handleChange={handleChange}
+            required={true}
           />
           <FormField 
             labelName='로고 스타일'
@@ -125,16 +125,6 @@ const CreatePost = () => {
             name='logoColor'
             handleChange={handleChange}
           />
-          {/* <FormField 
-            labelName='Prompt'
-            title='text'
-            name='prompt'
-            placeholder='Prompt...'
-            value={form.prompt}
-            handleChange={handleChange}
-            isSurpriseMe
-            handleSurpriseMe={handleSurpriseMe}
-          /> */}
 
           <div className='relative bg-gray-50 border border-gray-300 text-gray-900 text-sm
           rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center'>
@@ -160,26 +150,29 @@ const CreatePost = () => {
             )}
           </div>
 
-          <div className='mt-5 flex gap-5'>
+          <div className='flex'>
+            <div className='mt-5 gap-5'>
               <button
                 type='button'
                 onClick={generateImage}
-                className='text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto
-                px-5 py-2.5 text-center'
+                className='text-white bg-green-700 font-medium rounded-md text-sm w-full 
+                sm:w-auto px-5 py-2.5 text-center mr-4'
               >
-                {generatingImg ? 'Generating...' : 'Generate'}
+                {generatingImg ? '로고를 만드는 중입니다...' : '로고 만들기'}
               </button>
-          </div>
-
-          <div className='mt-10'>
-              <p className='mt-2 text-[$666e75] text-[14px]'>Once you have created the image you want, you can share~</p>
-              <button
-                type='submit'
-                className='mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full 
-                sm:w-auto px-5 py-2.5 text-center'
-              >
-                {loading ? 'sharing...' : 'share withe the community'}
-              </button>
+            </div>
+            
+            {form.photo && 
+              (<div className='mt-5 gap-5'>
+                <button
+                  type='submit'
+                  className='text-white bg-[#6469ff] font-medium rounded-md text-sm w-full 
+                  sm:w-auto px-5 py-2.5 text-center'
+                >
+                  {loading ? '로고를 저장하는 중입니다...' : '로고 저장하기'}
+                </button>
+              </div>)
+            }
           </div>
         </div>
       </form>
