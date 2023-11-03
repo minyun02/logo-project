@@ -7,5 +7,5 @@ export {
   Home,
   CreatePost,
   Naver,
-  MyPosts as MyLogos
+  MyPosts
 }

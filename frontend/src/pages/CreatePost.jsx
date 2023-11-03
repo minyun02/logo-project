@@ -17,7 +17,6 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false)
 
   const generateImage = async () => {
-    console.log(form)
     if (form.sportsType && form.teamName) {
       try {
         setGeneratingImg(true)
@@ -79,7 +78,6 @@ const CreatePost = () => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
-    console.log(form)
   }
 
   return (

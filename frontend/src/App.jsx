@@ -5,13 +5,13 @@ import { logo } from './assets'
 import { Home, CreatePost, Naver, MyPosts } from './pages'
 
 const logout = async () => {
-  const response = await fetch('http://localhost:8080/api/v1/users/logout', {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+  await fetch('http://localhost:8080/api/v1/users/logout', {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
   window.location.reload();
 }
 
@@ -21,7 +21,7 @@ const App = () => {
   useEffect(() => {
     const cookie = new Cookies()
     setIsLoggedIn(cookie.get('auth_token') !== undefined)
-  })
+  }, [])
   
   return (
     <BrowserRouter>
@@ -60,7 +60,7 @@ const App = () => {
       </header>
       <main className='sm:p-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]'>
         <Routes>
-          <Route path='/' element={<Home />}/>
+          <Route path='/' element={<Home isLoggedIn={isLoggedIn} />}/>
           <Route path='/create-post' element={<CreatePost />}/>
           <Route path='/naver-login' element={<Naver />}/>
           <Route path='/my-posts' element={<MyPosts />}/>

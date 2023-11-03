@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 
 import { Loader, Card, FormField } from '../components/index'
 
-const RenderCards = ({ data, title }) => {
-  if (data?.length > 0) return data.map((post) => <Card key={post._id} {...post}/>)
+const RenderCards = ({ data, title, isMyPosts }) => {
+  if (data?.length > 0) return data.map((post) => <Card key={post._id} {...post} isMyPosts={isMyPosts}/>)
 
   return (
     <h2 className='mt-5 font-bold text-[#6449ff] text-xl uppercase'>
@@ -12,16 +12,16 @@ const RenderCards = ({ data, title }) => {
   )
 }
 
-const Home = () => {
-  
+const Home = ({ isLoggedIn }) => {
+
   const [loading, setLoading] = useState(false)
   const [allPosts, setAllPosts] = useState(null)
 
   const [searchText, setSearchText] = useState('')
   const [searchedResults, setSearchedResults] = useState(null)
   const [searchTimeout, setSearchTimeout] = useState(null)
-
   useEffect(() => {
+    
     const fetchPosts = async () => {
       setLoading(true)
 
@@ -53,8 +53,8 @@ const Home = () => {
 
     setSearchTimeout(
       setTimeout(() => {
-        const searchResults = allPosts.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()) || 
-        item.prompt.toLowerCase().includes(searchText.toLowerCase()))
+        const searchResults = allPosts.filter((item) => item.teamName.toLowerCase().includes(searchText.toLowerCase()) || 
+        item.sportsType.toLowerCase().includes(searchText.toLowerCase()))
   
         setSearchedResults(searchResults)
   
@@ -69,17 +69,19 @@ const Home = () => {
         <p className='mt-2 text-gray-400 text-[16px] max-w-[500px]'>그려줘! 로고에서 만들어진 로고들입니다.</p>
       </div>
 
-      <div className='mt-16'>
-        <FormField 
-          labelName='로고 찾아보기'
-          type='text'
-          name='text'
-          placeholder='검색어를 입력하세요.'
-          value={searchText}
-          handleChange={handleSearchChange}
-        />
-      </div>
-
+      {isLoggedIn && 
+        <div className='mt-16'>
+          <FormField 
+            labelName='로고 찾아보기'
+            type='text'
+            name='text'
+            placeholder='종목 또는 팀명을 입력하세요.'
+            value={searchText}
+            handleChange={handleSearchChange}
+          />
+        </div>      
+      }
+            
       <div className='mt-10'>
         {loading ? (
           <div className='flex justify-center items-center'>
@@ -95,11 +97,13 @@ const Home = () => {
                 <RenderCards 
                   data={searchedResults}
                   title='검색 결과가 없습니다.'
+                  isMyPosts={false}
                 />
               ) : (
                 <RenderCards 
                   data={allPosts}
                   title='만든 로고가 없습니다.'
+                  isMyPosts={false}
                 />
               )}
             </div>
