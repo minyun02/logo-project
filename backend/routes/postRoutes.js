@@ -52,4 +52,17 @@ router.route('/').post( async (req, res) => {
   }
 })
 
+router.route('/my').get( async (req, res) => {
+  try {
+    const userId = req.headers.userid
+  
+    const myPosts = await Post.find({userId: userId})
+    
+    res.status(200).json({ success: true, data: myPosts })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: error })
+  }
+})
+
 export default router
