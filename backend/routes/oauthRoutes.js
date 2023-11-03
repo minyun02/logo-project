@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import { COOKIE_NAME, USER_COOKIE } from '../utils/constants.js'
 import { createToken } from '../utils/token-manager.js'
-import User from '../mongodb/models/User.js'
+import User from '../models/User.js'
 
 dotenv.config()
 
@@ -55,7 +55,7 @@ router.route('/').get(async (req, res) => {
     const expires = new Date()
     expires.setDate(expires.getDate() + 7)
     res.cookie(COOKIE_NAME, token, {path: '/', domain: 'localhost'})
-    res.cookie(USER_COOKIE, name, {path: '/', domain: 'localhost'})
+    res.cookie(USER_COOKIE, id, {path: '/', domain: 'localhost'})
 
     res.redirect(redirectURI)
     // res.status(200).json({ success: true, name: name  })
