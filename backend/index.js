@@ -2,7 +2,7 @@ import express from "express"
 import * as dotenv from 'dotenv'
 import cors from 'cors'
 
-import connectDB from './mongodb/connect.js'
+import connectDB from './loaders/connectDB.js'
 import postRoutes from './routes/postRoutes.js'
 import dalleRoutes from './routes/dalleRoutes.js'
 import oauthRoutes from './routes/oauthRoutes.js'
