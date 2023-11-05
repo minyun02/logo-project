@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import { Cookies } from 'react-cookie'
-import { logo } from './assets'
+import { logo, logout as nlogout, login as nlogin } from './assets'
 import { Home, CreatePost, Naver, MyPosts } from './pages'
 
 const logout = async () => {
@@ -47,13 +47,13 @@ const App = () => {
                               내 로고  
                             </Link>
                             <Link>
-                              <img onClick={() => logout()} src="/src/assets/logout.png" alt="naver logout" className='w-28 h-10'/> 
+                              <img onClick={() => logout()} src={nlogout} alt="naver logout" className='w-28 h-10'/> 
                             </Link>
                           </>
                           )
                         :
                           (<Link to='/naver-login'>
-                            <img src="/src/assets/login.png" alt="naver login" className='w-28 h-10'/>
+                            <img src={nlogin} alt="naver login" className='w-28 h-10'/>
                           </Link>)
             }
           </div>
