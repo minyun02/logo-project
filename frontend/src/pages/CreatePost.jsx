@@ -13,6 +13,7 @@ const CreatePost = () => {
     logoColor: '',
     photo: ''
   })
+  const [logoStyle, setLogoStyle] = useState([])
   const [generatingImg, setGeneratingImg] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -111,8 +112,8 @@ const CreatePost = () => {
           />
           <FormField 
             labelName='로고 스타일'
-            title='checkbox'
-            type='checkbox'
+            title='radio'
+            type='radio'
             name='logoStyle'
             handleChange={handleChange}
           />
