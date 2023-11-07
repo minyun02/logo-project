@@ -80,7 +80,7 @@ FrontEnd
 
 ### 5. 내 로고
 
-![내로고](https://github.com/minyun02/logo-project/assets/69966611/55cd183b-fb2a-4352-b6d2-adfa7ef01d75)
+![내로고](https://github.com/minyun02/logo-project/assets/69966611/79805721-2387-4b74-9059-22e2ba7f7c37)
 
 - 로고 페이지에서는 사용자가 생성한 로고 이미지들을 표시합니다. 사용자는 해당 페이지에서 로고 이미지를 다운로드할 수 있습니다.
 
