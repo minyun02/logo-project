@@ -26,6 +26,7 @@ const CreatePost = () => {
           headers: {
             'Content-Type': 'application/json',
           },
+          credentials: 'include',
           body: JSON.stringify({ 
             sportsType: form.sportsType,
             teamName: form.teamName,
@@ -52,22 +53,25 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     if (form.sportsType && form.photo) {
       setLoading(true)
-      const cookie = new Cookies()
+      
       try {
         const response = await fetch('http://localhost:8080/api/v1/posts', {
           method: 'POST',
           headers: {
-            'Content-type': 'application/json',
-            userId: cookie.get('auth_user')
+            'Content-type': 'application/json'
           },
+          credentials: 'include',
           body: JSON.stringify(form)
         })
 
         await response.json()
-        navigate('/')
+        if (response.status === 400) {
+
+        } else {
+          navigate('/')
+        }
 
       } catch (error) {
         alert(error)

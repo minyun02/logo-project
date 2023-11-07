@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
-import { Cookies } from 'react-cookie'
 import { logo, logout as nlogout, login as nlogin } from './assets'
 import { Home, CreatePost, Naver, MyPosts } from './pages'
 
 const logout = async () => {
   await fetch('http://localhost:8080/api/v1/users/logout', {
     method: 'GET',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include'
   })
   window.location.reload();
 }
@@ -19,7 +18,6 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    const cookie = new Cookies()
     setIsLoggedIn(cookie.get('auth_token') !== undefined)
   }, [])
   

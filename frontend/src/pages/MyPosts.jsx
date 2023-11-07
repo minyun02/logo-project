@@ -27,8 +27,9 @@ const MyPosts = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            userId: cookie.get('auth_user')
-          }
+            userId: cookie.get('auth_user'),
+          },
+          credentials: 'include'
         })
 
         if (response.ok) {

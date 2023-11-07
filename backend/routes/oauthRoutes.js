@@ -1,7 +1,7 @@
 import express from 'express'
 import * as dotenv from 'dotenv'
 
-import { COOKIE_NAME, USER_COOKIE } from '../utils/constants.js'
+import { COOKIE_NAME } from '../utils/constants.js'
 import { createToken } from '../utils/token-manager.js'
 import User from '../models/User.js'
 import * as oauthService from '../services/oauthService.js'
@@ -30,16 +30,13 @@ router.route('/').get(async (req, res) => {
     })
   }
   res.clearCookie(COOKIE_NAME, {
-    path: '/', domain: 'localhost'})
+    path: '/', domain: 'localhost'
+  })
 
-  res.clearCookie(USER_COOKIE, {
-    path: '/', domain: 'localhost'})
-
-  const token = createToken(id, name, '7d')
+  const token = createToken(id, name, '2d')
   const expires = new Date()
-  expires.setDate(expires.getDate() + 7)
-  res.cookie(COOKIE_NAME, token, {path: '/', domain: 'localhost'})
-  res.cookie(USER_COOKIE, id, {path: '/', domain: 'localhost'})
+  expires.setDate(expires.getDate() + 2)
+  res.cookie(COOKIE_NAME, token, {path: '/', domain: 'localhost', expires })
 
   res.redirect(process.env.NAVER_CLIENT_REDIRECT_URI)
 })
