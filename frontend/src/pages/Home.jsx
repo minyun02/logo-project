@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Loader, Card, FormField } from '../components/index'
 import { login as nlogin } from '../assets'
+import { useLoginContext } from '../shared/LoginContext'
 
 const RenderCards = ({ data, title, isMyPosts }) => {
   if (data?.length > 0) return data.map((post) => <Card key={post._id} {...post} isMyPosts={isMyPosts}/>)
@@ -13,8 +14,8 @@ const RenderCards = ({ data, title, isMyPosts }) => {
   )
 }
 
-const Home = ({ isLoggedIn }) => {
-
+const Home = () => {
+  const {isLoggedIn} = useLoginContext()
   const [loading, setLoading] = useState(false)
   const [allPosts, setAllPosts] = useState(null)
 

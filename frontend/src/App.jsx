@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom'
 import { logo, logout as nlogout, login as nlogin } from './assets'
 import { Home, CreatePost, Naver, MyPosts } from './pages'
-
-const logout = async () => {
-  await fetch('http://localhost:8080/api/v1/users/logout', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include'
-  })
-  window.location.reload();
-}
+import { useLoginContext } from './shared/LoginContext'
+import { logout } from './utils'
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const {isLoggedIn, setIsLoggedIn} = useLoginContext()
 
-  useEffect(() => {
-    setIsLoggedIn(cookie.get('auth_token') !== undefined)
-  }, [])
-  
+  const handleLogout = () => {
+    setIsLoggedIn(logout())
+
+    window.location.reload();
+  }
+
   return (
     <BrowserRouter>
       <header className='w-full flex justify-between items-center 
@@ -45,7 +38,7 @@ const App = () => {
                               내 로고  
                             </Link>
                             <Link>
-                              <img onClick={() => logout()} src={nlogout} alt="naver logout" className='w-28 h-10'/> 
+                              <img onClick={() => handleLogout()} src={nlogout} alt="naver logout" className='w-28 h-10'/> 
                             </Link>
                           </>
                           )
@@ -58,7 +51,7 @@ const App = () => {
       </header>
       <main className='sm:p-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]'>
         <Routes>
-          <Route path='/' element={<Home isLoggedIn={isLoggedIn} />}/>
+          <Route path='/' element={<Home />}/>
           <Route path='/create-post' element={<CreatePost />}/>
           <Route path='/naver-login' element={<Naver />}/>
           <Route path='/my-posts' element={<MyPosts />}/>
