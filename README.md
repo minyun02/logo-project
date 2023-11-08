@@ -93,6 +93,6 @@ FrontEnd
 
 </aside>
 
-- [React] 검색 기능 개선하기 (작성 중..)
+- [useContext로 로그인 여부 확인하기](https://doingsomething.tistory.com/110)
 
 ---
