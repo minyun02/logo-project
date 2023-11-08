@@ -93,6 +93,6 @@ FrontEnd
 
 </aside>
 
-- [useContext로 로그인 여부 확인하기](https://doingsomething.tistory.com/110)
+- [useContext로 로그인 여부 확인하기](https://doingsomething.tistory.com/110){:target="_blank"}
 
 ---
