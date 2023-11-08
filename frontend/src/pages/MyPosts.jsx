@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Loader, Card, FormField } from '../components/index'
 import { Cookies } from 'react-cookie'
+import { useLoginContext } from '../shared/LoginContext'
+import { useNavigate } from 'react-router-dom'
 
 const RenderCards = ({ data, title, isMyPosts }) => {
   if (data?.length > 0) return data.map((post) => <Card key={post._id} {...post} isMyPosts={isMyPosts}/>)
@@ -13,6 +15,8 @@ const RenderCards = ({ data, title, isMyPosts }) => {
 }
 
 const MyPosts = () => {
+  const navigate = useNavigate()
+  const {isLoggedIn} = useLoginContext()
   const [loading, setLoading] = useState(false)
   const [myPosts, setMyPosts] = useState(null)
 
@@ -44,7 +48,11 @@ const MyPosts = () => {
       }
     }
 
-    fetchMyPosts()
+    if (!isLoggedIn) {
+      navigate('/')
+    } else {
+      fetchMyPosts()  
+    }
   }, [])
 
   return (

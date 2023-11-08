@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { preview } from '../assets'
 import { FormField, Loader } from '../components'
+import { useLoginContext } from '../shared/LoginContext'
 
 const CreatePost = () => {
   const navigate = useNavigate()
+  const {isLoggedIn} = useLoginContext()
   const [form, setForm] = useState({
     sportsType: '',
     teamName: '',
@@ -12,7 +14,6 @@ const CreatePost = () => {
     logoColor: '',
     photo: ''
   })
-  const [logoStyle, setLogoStyle] = useState([])
   const [generatingImg, setGeneratingImg] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -83,6 +84,13 @@ const CreatePost = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
+
+  useEffect(() => {
+    console.log(isLoggedIn)
+    if (!isLoggedIn) {
+      navigate('/')
+    }
+  }, [])
 
   return (
     <section className='max-w-7xl mx-auto'>
