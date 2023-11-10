@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useLoginContext } from './shared/LoginContext'
-import { logo, logout as nlogout, login as nlogin } from './assets'
-import { logout } from './utils'
+import { useLoginContext } from '../shared/LoginContext'
+import { logo, logout as nlogout, login as nlogin } from '../assets'
+import { logout } from '../utils'
 
 const Navbar = () => {
 

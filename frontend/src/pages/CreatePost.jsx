@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { preview } from '../assets'
 import { FormField, Loader } from '../components'
 import { useLoginContext } from '../shared/LoginContext'
+import { formFieldData } from '../constants/constans'
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -82,11 +83,11 @@ const CreatePost = () => {
   }
 
   const handleChange = (e) => {
+    console.log(e.target.value)
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   useEffect(() => {
-    console.log(isLoggedIn)
     if (!isLoggedIn) {
       navigate('/')
     }
@@ -101,40 +102,20 @@ const CreatePost = () => {
 
       <form action="" className='mt-16 max-w-3xl' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-5'>
-          <FormField 
-            labelName='운동 종류'
-            title='text'
-            type='text'
-            name='sportsType'
-            placeholder='어떤 운동인지 알려주세요. 예시) 축구, 농구, 배드민턴 등...'
-            value={form.sportsType}
-            handleChange={handleChange}
-            required={true}
-          />
-          <FormField 
-            labelName='팀 이름'
-            title='text'
-            type='text'
-            name='teamName'
-            placeholder='팀명을 알려주세요.'
-            value={form.name}
-            handleChange={handleChange}
-            required={true}
-          />
-          <FormField 
-            labelName='로고 스타일'
-            title='radio'
-            type='radio'
-            name='logoStyle'
-            handleChange={handleChange}
-          />
-          <FormField 
-            labelName='로고 색상'
-            title='radio'
-            type='radio'
-            name='logoColor'
-            handleChange={handleChange}
-          />
+          {
+            formFieldData.map((data) => (
+              <FormField 
+                labelName={data.labelName}
+                title={data.title}
+                type={data.type}
+                name={data.name}
+                placeholder={data.placeholder}
+                value={form[`${data.name}`]}
+                handleChange={handleChange}
+                required={data.required}
+              />
+            ))
+          }
 
           <div className='relative bg-gray-50 border border-gray-300 text-gray-900 text-sm
           rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center'>
