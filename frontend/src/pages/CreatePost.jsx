@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { preview } from '../assets'
 import { FormField, Loader } from '../components'
-import { useLoginContext } from '../shared/LoginContext'
+import { useLoginContext } from '../utils/LoginContext'
 import { formFieldData } from '../constants/constans'
 
 const CreatePost = () => {

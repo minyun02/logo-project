@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Loader, Card, FormField } from '../components/index'
 import { Cookies } from 'react-cookie'
-import { useLoginContext } from '../shared/LoginContext'
+import { useLoginContext } from '../utils/LoginContext'
 import { useNavigate } from 'react-router-dom'
 
 const RenderCards = ({ data, title, isMyPosts }) => {
