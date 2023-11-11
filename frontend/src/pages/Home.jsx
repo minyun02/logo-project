@@ -3,6 +3,7 @@ import { Loader, FormField } from '../components/index'
 import { useLoginContext } from '../utils/LoginContext'
 import LadingPage from '../components/LadingPage'
 import RenderCards from '../components/RenderCards'
+import { getPosts } from '../helpers/api-communitor'
 
 const Home = () => {
   const {isLoggedIn} = useLoginContext()
@@ -18,23 +19,14 @@ const Home = () => {
       setLoading(true)
 
       try {
-        const response = await fetch('http://localhost:8080/api/v1/posts', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include'
-        })
-
-        if (response.ok) {
-          const result = await response.json()
-
-          setAllPosts(result.data.reverse())
-        }
+        const response = await getPosts()
+        if (response.success) setAllPosts(response.data.reverse())
+        
       } catch (error) {
         alert(error)
       } finally {
         setLoading(false)
+        // console.log(allPosts)
       }
     }
 

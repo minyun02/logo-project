@@ -3,6 +3,7 @@ import { Loader, Card, FormField } from '../components/index'
 import { Cookies } from 'react-cookie'
 import { useLoginContext } from '../utils/LoginContext'
 import { useNavigate } from 'react-router-dom'
+import { getMyPosts } from '../helpers/api-communitor'
 
 const RenderCards = ({ data, title, isMyPosts }) => {
   if (data?.length > 0) return data.map((post) => <Card key={post._id} {...post} isMyPosts={isMyPosts}/>)
@@ -24,23 +25,10 @@ const MyPosts = () => {
     const fetchMyPosts = async () => {
       setLoading(true)
 
-      const cookie = new Cookies()
-
       try {
-        const response = await fetch('http://localhost:8080/api/v1/posts/my', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            userId: cookie.get('auth_user'),
-          },
-          credentials: 'include'
-        })
-
-        if (response.ok) {
-          const result = await response.json()
-          
-          setMyPosts(result.data.reverse())
-        }
+        const response = await getMyPosts()
+        if (response.success) setMyPosts(response.data.reverse())
+        
       } catch (error) {
         console.log(error)
       } finally {

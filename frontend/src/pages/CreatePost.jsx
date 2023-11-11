@@ -4,6 +4,7 @@ import { preview } from '../assets'
 import { FormField, Loader } from '../components'
 import { useLoginContext } from '../utils/LoginContext'
 import { formFieldData } from '../constants/constans'
+import { getGeneratedImage, saveLogoImage } from '../helpers/api-communitor'
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -22,23 +23,11 @@ const CreatePost = () => {
     if (form.sportsType && form.teamName) {
       try {
         setGeneratingImg(true)
-        const response = await fetch('http://localhost:8080/api/v1/dalle', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ 
-            sportsType: form.sportsType,
-            teamName: form.teamName,
-            logoStyle: form.logoStyle,
-            logoColor: form.logoColor,
-          })
-        }).then((res) => res.json()).then((data) => {
-          setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo[0].b64_json}`})
-        })
+        const response = await getGeneratedImage(form)
+        setForm({ ...form, photo: `data:image/jpeg;base64,${response.photo[0].b64_json}`})
+
       } catch (error) {
-        alert(error)
+        console.log(error)
       } finally {
         setGeneratingImg(false)
       }
@@ -58,22 +47,10 @@ const CreatePost = () => {
       setLoading(true)
       
       try {
-        const response = await fetch('http://localhost:8080/api/v1/posts', {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          credentials: 'include',
-          body: JSON.stringify(form)
-        })
-
-        await response.json()
-        if (response.status === 400) {
-
-        } else {
-          navigate('/')
-        }
-
+        const response = await saveLogoImage(form)
+        console.log(response)
+        if (response.success) navigate('/') 
+        // else
       } catch (error) {
         alert(error)
       } finally {
