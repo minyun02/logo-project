@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useLoginContext } from '../contexts/LoginContext'
+import { useLoginContext } from '../utils/LoginContext'
 import { logo, logout as nlogout, login as nlogin } from '../assets'
 import { logout } from '../utils'
 
